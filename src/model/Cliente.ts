@@ -1,3 +1,7 @@
+import { DatabaseModel } from "./DatabaseModel";
+
+const database = new DatabaseModel().pool
+
 /* Classe que representa cliente */
 export class Cliente{
 
@@ -96,5 +100,35 @@ export class Cliente{
     public setTelefone(telefone: string): void{
         this.telefone = telefone;
     }
+
+     //MÉTODO PRA ACESSAR BANCO DE DADOS
+    //CRUD Creat - Read - Update - Delete
+    static async listarClientes(): Promise<Array<Cliente> | null> {
+        let listaDeClientes: Array<Cliente> = [];
+
+        try {
+            //QUERY para consulta de banco de dados
+            const querySelectCliente = `SELECT * FROM Cliente;`;
+
+            //executa a QUERY no banco de dados
+            const respostaBD = await database.query(querySelectCliente);
+            
+            respostaBD.rows.forEach((cliente) => {
+                let novoCliente = new Cliente(
+                    cliente.nome,
+                    cliente.cpf,
+                    cliente.telefone,
+                );
+                novoCliente.setIdCliente(cliente.id);
+                listaDeClientes.push(novoCliente);
+            });
+
+            return listaDeClientes;
+        } catch (error) {
+            console.log(`Erro ao acessar modelo: ${error}`);
+            return null;
+        }
+    }
+
 }
 
