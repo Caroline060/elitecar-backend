@@ -22,7 +22,6 @@ export class Cliente{
         cpf: string,
         telefone: string
     ){
-        this.idCliente = idCliente;
         this.nome = nome;
         this.cpf = cpf;
         this.telefone = telefone;
