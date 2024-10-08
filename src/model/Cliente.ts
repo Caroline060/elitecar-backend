@@ -18,7 +18,6 @@ export class Cliente{
      * @param telefone Telefone do cliente
      */
     constructor (
-        idCliente: number,
         nome: string,
         cpf: string,
         telefone: string
@@ -68,7 +67,7 @@ export class Cliente{
      *
      * @returns {string} o cpf do cliente.
      */ 
-    public geCpf(): string {
+    public getCpf(): string {
         return this.cpf;
     }
 
@@ -82,7 +81,7 @@ export class Cliente{
     }
 
     /**
-     * Retorna o telefone do carro.
+     * Retorna o telefone do cliente.
      *
      * @returns O telefone do cliente.
      */ 
