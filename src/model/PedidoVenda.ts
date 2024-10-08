@@ -71,7 +71,7 @@ export class PedidoVenda{
      *
      * @returns {number} o valor do pedido.
      */ 
-    public geValorPedido(): number {
+    public getValorPedido(): number {
         return this.valorPedido;
     }
 
