@@ -273,25 +273,35 @@ export class Carro {
  * - Tratamento de erros é implementado para capturar e logar possíveis exceções.
  */
 
-    static async atualizarCarro(carro: Carro): Promise <boolean>{
+    // Declaração da função assíncrona para atualizar os dados de um carro no banco de dados
+    static async atualizarCarro(carro: Carro): Promise<boolean> {
         try {
+            // Criação da query SQL para atualizar os campos do carro na tabela 'carro'
             const queryUpdateCarro = `UPDATE carro SET
-                                       marca = '${carro.getMarca()}', 
-                                       modelo = '${carro.getModelo()}', 
-                                       ano = ${carro.getAno()}, 
-                                       cor = '${carro.getCor()}')
-                                       WHERE id_carro = ${carro.getIdCarro()};`;
+                                   marca = '${carro.getMarca()}', 
+                                   modelo = '${carro.getModelo()}', 
+                                   ano = ${carro.getAno()}, 
+                                   cor = '${carro.getCor()}')
+                                   WHERE id_carro = ${carro.getIdCarro()};`;
 
+            // Executa a consulta SQL no banco de dados e armazena o resultado
             const respostaBD = await database.query(queryUpdateCarro);
 
-            if(respostaBD.rowCount != 0) {
+            // Verifica se algum registro foi alterado pela operação de atualização
+            if (respostaBD.rowCount != 0) {
+                // Loga uma mensagem indicando que o carro foi atualizado com sucesso
                 console.log(`Carro atualizado com sucesso! ID: ${carro.getIdCarro()}`);
-                return true;
-            } return false;
-        } catch (error) {
-            console.log(`Erro ao atualizar carro. verifique os logs para mais detalhes.`);
-            console.log(error);
+                return true; // Retorna verdadeiro para indicar sucesso
+            }
+            // Retorna falso se nenhum registro foi alterado (ID inexistente ou dados idênticos)
             return false;
+        } catch (error) {
+            // Loga uma mensagem genérica de erro em caso de falha na execução
+            console.log(`Erro ao atualizar carro. Verifique os logs para mais detalhes.`);
+            // Exibe detalhes do erro para depuração
+            console.log(error);
+            // Retorna falso em caso de falha na execução
+            return false; 
         }
     }
 }

@@ -207,21 +207,46 @@ export class PedidoVenda {
         }
     }
 
-    
-    static async removerPedido(idPedido: number): Promise<boolean>{
+    /**
+ * Remove um pedido de venda do banco de dados com base no ID fornecido.
+ * 
+ * @param {number} idPedido - O identificador único do pedido que será removido.
+ * @returns {Promise<boolean>} - Retorna `true` se o pedido foi removido com sucesso,
+ * ou `false` caso contrário.
+ * 
+ * - A função constrói uma consulta SQL `DELETE` para excluir um registro da tabela 
+ * `pedido_venda` onde o `id_pedido` coincide com o valor fornecido.
+ * - Caso a exclusão seja realizada com sucesso (indicado pelo `rowCount` do resultado
+ * ser diferente de 0), um log de sucesso é exibido, e a função retorna `true`.
+ * - Se o pedido não for encontrado ou a exclusão não for bem-sucedida, retorna `false`.
+ * - Tratamento de erros é implementado para capturar e logar possíveis exceções 
+ * que ocorram durante a execução da consulta SQL.
+ */
+
+    // Declaração da função assíncrona que remove um pedido pelo ID
+    static async removerPedido(idPedido: number): Promise<boolean> {
         try {
+            // Declaração da query SQL para excluir o pedido com o ID fornecido
             const queryDeletePedido = `DELETE FROM pedido_venda WHERE id_pedido = ${idPedido}`;
+        
+            // Executa a consulta SQL no banco de dados e armazena a resposta
             const respostaBD = await database.query(queryDeletePedido);
-            if(respostaBD.rowCount !=0){
-                console.log(`Pedido removido com sucesso ! `);
-                return true;
+
+            // Verifica se algum registro foi afetado pela operação de exclusão
+            if (respostaBD.rowCount != 0) {
+                // Loga uma mensagem indicando que o pedido foi removido com sucesso
+                console.log(`Pedido removido com sucesso!`);
+                return true; // Retorna verdadeiro para indicar sucesso
             }
+        
+            // Retorna falso se nenhum registro foi removido (pedido inexistente ou erro)
             return false;
-            
         } catch (error) {
-            console.log(`Erro ao remover pedido. verifique os logs para mais detalhes.`);
+            // Loga uma mensagem de erro genérica caso uma exceção ocorra
+            console.log(`Erro ao remover pedido. Verifique os logs para mais detalhes.`);
+            // Exibe o erro no console para depuração
             console.log(error);
-            return false;
+            return false; // Retorna falso em caso de falha na execução
         }
     }
 }
